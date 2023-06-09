@@ -1,53 +1,53 @@
 
 
-# Ingenieria de Datos con Snowpark y visualización con Streamlit
+# Data Engineering with Snowpark and visualization with Streamlit
 
 
-## Contexto 
-**INEGI** es un organismo público autónomo responsable de normar y coordinar el Sistema Nacional de Información Estadística y Geográfica, así como de captar y difundir información de México en cuanto al territorio, los recursos, la población y economía, que permita dar a conocer las características del país y ayudar a la toma de decisiones, publican el [Sistema de consulta](https://www.inegi.org.mx/siscon/) del cual se puden tomar set de datos públicos.
+## Context
+**INEGI** is an autonomous public agency responsible for regulating and coordinating the National System of Statistical and Geographic Information, as well as for gathering and disseminating information on Mexico's territory, resources, population and economy, which makes it possible to provide information on the country's characteristics and aid in decision-making. It publishes the [get information by queries](https://www.inegi.org.mx/siscon/) from which public data sets can be taken.
 
-### Problema
-- El Instituto genera estadística básica, la cual obtiene de tres tipos de fuentes: censos, encuestas y registros administrativos, así como estadística derivada, mediante la cual produce indicadores demográficos, sociales y económicos, además de contabilidad nacional.Estos datos son una fuente muy utilizada para realizar analisis en todo tipo de industrias, sin embargo puede tener retos interesantes como el aceso  ya que se encuentran en un almacenamiento en formatos de  archivos,los datos pueden rrequerir procesamiento para ser utilizados por ejemplo  no estan con formato no correcto para ciencia o visualización de datos así como algunos temas de calidad de datos como  contener datos nulos (NULL)  (*) en algunas columnas.
+### Complication
+- The Institute generates basic statistics, which it obtains from three types of sources: censuses, surveys and administrative records, as well as derived statistics, through which it produces demographic, social and economic indicators, in addition to national accounting. This data is a widely used source for analysis in all types of industries, however it can have interesting challenges such as access as it is stored in file formats, the data can require processing to be used for example it is not formatted correctly for science or data visualization as well as some data quality issues such as containing null (NULL) data (*) in some columns.
 
 
-### Qué construirás 
-- En esta guía  aprenderás como construir una aplicación Web utilizando   Streamlit,  un marco de desarrollo de aplicación de código abierto en lenguaje Python,  realizará un proceso de ingeniería de datos carga, transformación  de  tipos de datos( latitud/longitud) en Pythonen Snowflake Data Cloud.
-![App](https://github.com/sfc-gh-csuarez/snowpark_inegi/blob/main/img/st1.png)
+### Your mission / What will you develop? 
+- In this guide you will learn how to build a web application using Streamlit, an open source application development framework in Python language, will perform a data engineering process load, data type transformation (latitude/longitude) in Python in Snowflake Data Cloud.
+![App](https://github.com/HeysolRacing/snowpark_inegi-main)
 
-### Qué necesitas 
-- Acceso a [GitHub](https://github.com/)  
-- [VSCode](https://code.visualstudio.com/download) con Jupyter Notebook
+### Requirements 
+- Access to [GitHub](https://github.com/)  
+- [VSCode](https://code.visualstudio.com/download) with Jupyter Notebook
 - [SnowSQL](https://developers.snowflake.com/snowsql/)  
 - [Python](https://www.python.org/) (Python 3.8)
 - [Anaconda](https://www.anaconda.com/products/distribution)
 - Snowpark Python 
 - Streamlit 
 
-### Arquitectura de Solución
-![Arquitectura y modelo de servicio desde descarga de archivos en fuente Hosting de proveedor de datos, extracción y transformación de datos con Snowpark Python, carga datos usando   código hacia un  internal stage con Snowflake, con una interfase en Streamlit usando  Python para implementar la visualización de datos](https://github.com/sfc-gh-csuarez/snowpark_inegi/blob/main/img/modelo.png)
+### Architecture Diagram
+![Architecture and service model from file download in source data provider hosting, data extraction and transformation with Snowpark Python, data loading using code to an internal stage with Snowflake, with a Streamlit interface using Python to implement data visualization.](https://github.com/HeysolRacing/snowpark_inegi-main/blob/master/img/modelo.png)
 
 
-## Instalación
-<h4>Código fuente</h4>
-Decargar el repositorio que contiene el código en [Github repo](https://github.com/sfc-gh-csuarez/snowpark_inegi.git):
+## Setup
+<h4>Code</h4>
+Download the repository that contains the code at [Github repo](https://github.com/HeysolRacing/snowpark_inegi-main.git):
 
 
 ```shell
-git clone https://github.com/sfc-gh-csuarez/snowpark_inegi.git 
+git clone https://github.com/HeysolRacing/snowpark_inegi-main.git
 ```
-Después de descargar el proyecto debes  ingresar a la carpeta **snowpark_inegi-main** y abrir con Visual Studio Code o el editor de preferencia que soporte archivos Jupyter Notebook  
+After downloading the project, go to the **snowpark_inegi-main** folder and open it with Visual Studio Code or your preferred editor that supports Jupyter Notebook files.
 
-<h4>Creación de ambiente de desarrollo Python</h4> 
-Crear un ambiente local de desarrollo para la instalación de algunas librerias así como de Snowpark con la versión Python 3.8.
-Teniendo Anaconda instalado con la aplicación terminal o línea de comando, dentro de la carpeta donde de descargo el repositorio(clon) de github, para crear un ambiente de desarrollo ejecutar:
+<h4>Creation of Python development environment</h4>. 
+Create a local development environment for the installation of some libraries as well as Snowpark with Python 3.8 version.
+Having Anaconda installed with the terminal or command line application, inside the folder where I download the github repository(clone), to create a development environment run:
 
 ```shell
 conda create --name snowpark_env python=3.8 
 conda activate snowpark_env
 ```
 
-<h4>Instalación Snowpark Python</h4> 
-Instalación de Snowpark 
+<h4>Snowpark Python Installation</h4>. 
+Snowpark Installation
 
 ```shell
 pip install snowflake-snowpark-python pandas
@@ -58,21 +58,19 @@ conda install -c conda-forge streamlit
 conda install -c conda-forge pillow
 ```
 
+### Set up config.py
+In the Snowflake URL https://<account_id>.<account_region_zone>.snowflakecomputing.com example: https://ly14496.south-central-us.azure.snowflakecomputing.com the corresponding values are:
 
+account_id = ly14496<br>
+account_region_zone = south-central-us.azure<br>
 
-### Configuración config.py
-En la URL Snowflake https://<id_cuenta>.<zona_region_cuenta>.snowflakecomputing.com ejemplo: https://ly14496.south-central-us.azure.snowflakecomputing.com los valores correspondientes son:
-
-id_cuenta = ly14496<br>
-zona_region_cuenta = south-central-us.azure<br>
-
-En este archivo config.py ingresar los valores para cada propiedad con la información para acceder a Snowflake desde Paython usando Snowpark.
+In this config.py file enter the values for each property with the information to access Snowflake from Python using Snowpark.
 
 ```python
 connection_parameters = {
-    "account": "id_cuenta.zona_region_cuenta",
-    "user": "tu_usuario_snowflake",
-    "password": "tu_contraseñan_snowflake",
+    "account": "account_id.account_region_zone",
+    "user": "user_snowflake",
+    "password": "password_snowflake",
     "warehouse": "INEGI_WH",
     "role": "INEGI_ROLE",
     "database": "INEGI",
@@ -80,7 +78,7 @@ connection_parameters = {
 }
 ```
 
-### En el ambiente <b>Snowflake UI(Web)</b> ejecutar con role <b>ACCOUNTADMIN</b>:
+### In the environment <b>Snowflake UI(Web)</b> execute everything with <b>ACCOUNTADMIN</b> role:
 
 ```sql
 use role accountadmin;
@@ -106,49 +104,49 @@ grant usage on warehouse inegi_wh to role inegi_role;
 ```
 
 
-## Ejecución
+## Execute
 
-### Activación de Notebook y Ambiente de desarrollo (terminal o VSC):
+### Notebook and development environment (terminal or VSC) activation:
 ```shell
 jupyter notebook
 conda activate snowpark_env
 ```
 
-Ejecutar en Jupyter Notebook para cada uno de los siguientes Notebooks, puede realizarlo en  en Visual Studio Code (o terminal) ejecutar:
-
+Run in Jupyter Notebook for each of the following Notebooks, you can do it in Visual Studio Code (or terminal) run:
 
 <ul>
 <li><b>01_INEGI_download.ipynb</b></li>
-Ejecutar el cell el cual realizara el proceso de extracción, transformación y partición de origen CSV a JSON 
+Execute the cell which will perform the process of extracting, transforming and partitioning the CSV source to JSON.
 
 ```python
-#Script para ejección de descarga de archivo y realizar transformaciones (Split a JSON)
+#Script for file download execution and transformations (Split to JSON)
 from inegidata import urlDownload
-# opción 'remote' para descarga desde webhost de INEGI
-# opciób 'local' para descompresión desde repo local
+# opción 'remote' for download from INEGI's webhost
+# opciób 'local' for decompression from local repo
 urlDownload('remote')
 ```
 
 <li><b>02_INEGI_dataEngineering.ipynb</b></li>
 <ol>
-<li>Ejecutar los dos primeros cells para cargar las librerías necesarias y activar la sesión a Snowflake.</li>
-<li>Ejecutar el cell #Activación para crear los objectos y privilegios Snowflake</li>
-<li>Eljecutar el cell #Crear internal Stage para la carga de datos JSON ya curados</li>
-<li>Electuar e cell #Transformando a objeto Snowflake para la colocación de datos en el objeto Snowflake tabla</li>
+<li>Execute the first two cells to load the necessary libraries and activate the Snowflake session.</li>
+<li>Execute the cell #Activation to create Snowflake objects and privileges</li>
+<li>Execute the cell #Create internal Stage for loading already curated JSON data</li>
+<li>Execute the cell #Transforming to Snowflake object for placing data into Snowflake table object</li>
 </ol>
 
 <li><b>03_INEGI_dataModeling.ipynb</b></li>
 <ol>
-<li>Ejecutar los dos primeros cells para cargar las librerías necesarias y activar la sesión a Snowflake.</li>
-<li>Ejecutar el cell #Crear vista para crear la vista que tendrá los datos que incluyen transformación de datos JSON en tabla INEGI_RAW</li>
-<li>Ejecutar el cell #UDF declaración para incorporar la función creada en python nom_entidad que servirá para convertir No. de entidad por nombre de entidad.</li>
-<li>Ejecutar el cell #Vista con totales por entidad aplicando para materializar datos aplicando UDF y que tendrá los totales máximos de población para cada entidad</li>
-<li>Ejecutar el cell #Validar la vista solo con totales por entidad para validar el contenido de la vista creada</li>
+<li>Execute the first two cells to load the necessary libraries and activate the Snowflake session.</li>
+<li>Execute the cell #Create view to create the view that will have the data including JSON data transformation in INEGI_RAW table.</li>
+<li>Execute the cell #UDF statement to incorporate the function created in python nom_entity that will be used to convert entity No. to entity name.</li>
+<li>Execute the cell #View with totals by entity applying to materialize data applying UDF and which will have the maximum population totals for each 
+    entity.</li>
+<li>Execute the cell #Validate view only with totals per entity to validate the content of the created view.</li>
 </ol>
 
 <li><b>04_Streamlit.py</b><br>
  
- Para ejecutar la aplicación  web  puedes utilizar   Visual Studio Code (o en otra terminal):
+To run the web application you can use Visual Studio Code (or another terminal)::
  
  ```shell
 streamlit run 04_Streamlit.py
