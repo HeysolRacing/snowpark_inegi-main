@@ -25,7 +25,7 @@ def run_query(sesion,query):
 #@st.experimental_memo() 
 def inegiDataSet():
     st.set_page_config(
-    page_title="INEGI App",
+    page_title="NGSS Demo INEGI App",
     page_icon="☻",
     layout="wide",
     initial_sidebar_state="expanded",)
@@ -59,14 +59,14 @@ def inegiDataSet():
             result_df = snowPD.loc[snowPD['TOTAL_POPULATION'] == maxp]
             st.markdown(divContainer(), unsafe_allow_html=True)
             formatMaxp = formatoNumero(maxp)
-            label_max = str(result_df.loc[0].at['NOM_ENTIDAD'])
+            label_max = str(result_df.loc[0].at['NOM_ENTITY'])
             st.metric(label="Major entity: " + label_max, value=formatMaxp, delta="5%",delta_color="inverse")
 
     with st.container():
         st.subheader('Histogram by entity > a ' + formatoNumero(add_n_hab) + ' residents')
-        barDF = snowPD[['NOM_ENTIDAD','TOTAL_POPULATION']]
+        barDF = snowPD[['NOM_ENTITY','TOTAL_POPULATION']]
         chart = alt.Chart(barDF).mark_bar().encode(
-        x='NOM_ENTIDAD',
+        x='NOM_ENTITY',
         y='TOTAL_POPULATION',
         ).interactive()
         st.altair_chart(chart, use_container_width=True)        
