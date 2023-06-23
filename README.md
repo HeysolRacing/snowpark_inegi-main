@@ -1,14 +1,10 @@
-
-
 # Data Engineering with Snowpark and visualization with Streamlit
-
 
 ## Context
 **INEGI** is an autonomous public agency responsible for regulating and coordinating the National System of Statistical and Geographic Information, as well as for gathering and disseminating information on Mexico's territory, resources, population and economy, which makes it possible to provide information on the country's characteristics and aid in decision-making. It publishes the [get information by queries](https://www.inegi.org.mx/siscon/) from which public data sets can be taken.
 
 ### Complication
 - The Institute generates basic statistics, which it obtains from three types of sources: censuses, surveys and administrative records, as well as derived statistics, through which it produces demographic, social and economic indicators, in addition to national accounting. This data is a widely used source for analysis in all types of industries, however it can have interesting challenges such as access as it is stored in file formats, the data can require processing to be used for example it is not formatted correctly for science or data visualization as well as some data quality issues such as containing null (NULL) data (*) in some columns.
-
 
 ### Your mission / What will you develop? 
 - In this guide you will learn how to build a web application using Streamlit, an open source application development framework in Python language, will perform a data engineering process load, data type transformation (latitude/longitude) in Python in Snowflake Data Cloud.
@@ -30,7 +26,6 @@
 ## Setup
 <h4>Code</h4>
 Download the repository that contains the code at [Github repo](https://github.com/HeysolRacing/snowpark_inegi-main.git):
-
 
 ```shell
 git clone https://github.com/HeysolRacing/snowpark_inegi-main.git
@@ -82,9 +77,9 @@ connection_parameters = {
 
 ```sql
 use role accountadmin;
---objetos 
+--objects 
 create database inegi;
---wharehouse
+--warehouse
 create warehouse inegi_wh 
 warehouse_type = 'STANDARD' 
 warehouse_size =XSMALL 
@@ -92,17 +87,16 @@ auto_suspend = 120
 auto_resume = TRUE 
 max_cluster_count=1 
 min_cluster_count=1;
---rol
+--role
 create role inegi_role;
-grant role inegi_role to user <tu_usuario_snowflake>;
-grant role sysadmin to user <tu_usuario_snowflake>;
+grant role inegi_role to user <snowflake_user>;
+grant role sysadmin to user <snowflake_user>;
 grant role sysadmin to role inegi_role;
---privilegios  
+--privileges  
 grant usage on database inegi to role inegi_role;
 grant all privileges on schema public to role inegi_role;
 grant usage on warehouse inegi_wh to role inegi_role;
 ```
-
 
 ## Execute
 
@@ -149,7 +143,7 @@ urlDownload('remote')
 To run the web application you can use Visual Studio Code (or another terminal)::
  
  ```shell
-streamlit run 04_Streamlit.py
+streamlit run Homepage.py
 ```
 
 </li>
