@@ -5,7 +5,7 @@ st.set_page_config(
     page_icon = "🍌"
 )
 
-st.title("Intro Page")
+st.title("Hello World Demo!")
 st.sidebar.success("Select a page above.")
 
 if "my_input" not in st.session_state:
