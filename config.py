@@ -3,7 +3,7 @@
 connection_parameters = {
     "account": "prb86257.us-east-1",
     "user": "MxGbs",
-    "password": "$noWflak3-2023$",
+    "password": "$noWflak3-2023$x",
     "warehouse": "INEGI_WH",
     "role": "INEGI_ROLE",
     "database": "INEGI",
